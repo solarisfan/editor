@@ -11,6 +11,8 @@ class SDLview {
 		int winWidth;
 		int winHeight;
 		int eventTimeout;
+		SDL_Color bgcolor;
+		SDL_Color fgcolor;
 		
 	protected:
 		void waitNextEvent();

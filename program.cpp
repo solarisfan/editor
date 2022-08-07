@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <getopt.h>
 #include "view.h"
+#include "document.h"
 
 int main(int argc, char *argv[]) {
 	TView vw;
+	Document doc;
 	char *fname = NULL;
 	int c;
 	

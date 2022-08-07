@@ -5,10 +5,13 @@ SDLview::SDLview() {
 	winWidth = 640;
 	winHeight = 480;
 	eventTimeout = 1000; // 1 second
+	bgcolor = {40, 40, 40, SDL_ALPHA_OPAQUE};
+	fgcolor = {0xFF, 0xB0, 0x0, SDL_ALPHA_OPAQUE};
 	SDL_Init(SDL_INIT_VIDEO);
 }
 
 SDLview::~SDLview() {
+	SDL_Quit();
 }
 
 void SDLview::create() {

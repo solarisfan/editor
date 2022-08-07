@@ -18,6 +18,7 @@ SDLfont::SDLfont() {
 SDLfont::~SDLfont() {
 	if (font) TTF_CloseFont(font);
 	font = NULL;
+	TTF_Quit();
 }
 
 void SDLfont::findDefaultFont() {
