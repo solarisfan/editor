@@ -7,7 +7,7 @@ CFLAGS += `pkg-config --cflags fontconfig`
 LIBS = `pkg-config sdl2 --libs`
 LIBS += `pkg-config SDL2_ttf --libs`
 LIBS += `pkg-config --libs fontconfig`
-OBJS = sdlview.o sdlfont.o view.o
+OBJS = sdlview.o sdlfont.o view.o ustring.o document.o
 
 edt: program.o $(OBJS)
 	g++ $(CFLAGS) $< $(OBJS) $(LIBS)
