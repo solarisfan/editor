@@ -8,6 +8,7 @@
 class UString {
 	protected:
 		char *data;
+		int byteCount(char c);
 		
 	public:
 		UString();

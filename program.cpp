@@ -22,6 +22,7 @@ int main(int argc, char *argv[]) {
 	for (int i=optind; i<argc; i++) {
 		fname = argv[i];
 	}
+	if (fname) doc.load(fname);
 	vw.activate();
 	return 0;
 }

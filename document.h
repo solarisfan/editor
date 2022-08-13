@@ -5,15 +5,39 @@
 #include "ustring.h"
 
 /**
- * A document contains paragraphs which contain lines of text.
+ * A line of text contains arbiturary number of utf8 characters.
+ * New line character is not encoded.
+ * A paragraph contains a number of lines
  * A document contains a file handler.
  */
-class Line {
+class Line : public UString {
 	private:
-		UString buf;
+		int allocated;
+		int used;
+		int cursor; // # of bytes from pointer start
+		
+	protected:
+		void checkBuffer(size_t bytesRequired);
+		
 	public:
-		Line() {};
-		~Line() {};
+		class iterator {
+			private:
+				int cursor;
+				Line *object;
+				
+			public:
+				iterator(Line *obj);
+				Line::iterator operator++(); //Prefix 
+				Line::iterator operator++(int); //Postfix
+				Line::iterator operator--(); //Prefix 
+				Line::iterator operator--(int); //Postfix
+				bool eol();
+		};
+		
+		Line::iterator begin(int pos = 0); // # of utf8 characters offset
+		Line();
+		~Line();
+		void setPos(int bytes); // Move cursor to the byte position
 };
 
 class Paragraph {
@@ -27,11 +51,12 @@ class Paragraph {
 
 class Document {
 	private:
-		std::vector<Paragraph *>text;
+		Paragraph text;
 		
 	public:
 		Document();
 		~Document();
+		void load(char *s);
 };
 
 #endif

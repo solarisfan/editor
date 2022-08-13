@@ -2,7 +2,8 @@
 #include <string.h>
 #include "ustring.h"
 
-static int byteCount(char s) {
+int 
+UString::byteCount(char s) {
 	int nbytes = 0;
 	if (s < 0x80) {
 		nbytes = 1;
@@ -39,7 +40,7 @@ int UString::strlen() {
 	char *s = data;
 	int cnt=0;
 	for (int i=0; i < limit; cnt++) {
-		int bytes = ::byteCount(*s);
+		int bytes = byteCount(*s);
 		if (bytes == 0) return -1;
 		i += bytes;
 		s += bytes;
@@ -47,3 +48,4 @@ int UString::strlen() {
 	return cnt;
 	
 }
+
