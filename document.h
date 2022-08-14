@@ -15,6 +15,7 @@ class Line : public UString {
 		int allocated;
 		int used;
 		int cursor; // # of bytes from pointer start
+		char *bytemap;
 		
 	protected:
 		void checkBuffer(size_t bytesRequired);
@@ -27,9 +28,9 @@ class Line : public UString {
 				
 			public:
 				iterator(Line *obj);
-				Line::iterator operator++(); //Prefix 
+				Line::iterator& operator++(); //Prefix 
 				Line::iterator operator++(int); //Postfix
-				Line::iterator operator--(); //Prefix 
+				Line::iterator& operator--(); //Prefix 
 				Line::iterator operator--(int); //Postfix
 				bool eol();
 		};
@@ -38,6 +39,7 @@ class Line : public UString {
 		Line();
 		~Line();
 		void setPos(int bytes); // Move cursor to the byte position
+		Line& operator +=(char *s);
 };
 
 class Paragraph {
