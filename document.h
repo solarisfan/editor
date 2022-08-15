@@ -15,7 +15,8 @@ class Line : public UString {
 		int allocated;
 		int used;
 		int cursor; // # of bytes from pointer start
-		char *bytemap;
+		char *index;
+		int addOneChar(char *s);
 		
 	protected:
 		void checkBuffer(size_t bytesRequired);

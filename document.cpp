@@ -60,7 +60,7 @@ Line::iterator Line::iterator::operator++(int) {
 	if (cursor >= object->used) return *this;
 	Line::iterator it = *this;
 	char *ptr = object->data + cursor;
-	char *idx = object->bytemap + cursor;
+	char *idx = object->index + cursor;
 	if (*ptr == '\0') return it;
 	cursor += *idx;
 	return it;
@@ -72,7 +72,7 @@ Line::iterator Line::iterator::operator++(int) {
 Line::iterator& Line::iterator::operator++() {
 	if (cursor >= object->used) return *this;
 	char *ptr = object->data + cursor;
-	char *idx = object->bytemap + cursor;
+	char *idx = object->index + cursor;
 	if (*ptr == '\0') return *this;
 	cursor += *idx;
 	return *this;
@@ -104,34 +104,44 @@ Line::iterator& Line::iterator::operator--() {
 	return *this;
 }
 
+/**
+ * Add one utf8 character to the current cursor position
+ */
+int Line::addOneChar(char *s) {
+	char *ptr = data + cursor;
+	char *bits = index + cursor;
+	char tmp[5];
+	
+	int n = byteCount(*s);
+	if (n < 1) return 0;
+	memcpy(tmp, s, n);
+	*(tmp + n) = '\0';
+	memcpy(ptr, tmp, n);
+	memset(bits, 0, n);
+	*bits = n;
+	cursor += n;
+	used += n;
+	*(ptr + used) = '\0';
+	return n;
+}
+
+/**
+ * Add character(s) to the current cursor.
+ * Input method can have word association.
+ */
 Line& Line::operator +=(char *s) {
 	size_t len = ::strlen(s);
 	checkBuffer(len + used);
 	if (cursor < used) {
 		char *src = data + cursor;
 		::memmove(src + len, src, ::strlen(src));
-		src = bytemap + cursor;
+		src = index + cursor;
 		::memmove(src + len, src, ::strlen(src));
 	}
-	char *ptr = data + cursor;
-	char *bits = bytemap + cursor;
 	while(len > 0) {
-		int n = byteCount(*s);
+		int n = addOneChar(s);
 		len -= n;
-		*bits = n;
-		*ptr = *s;
-		cursor++;
-		n--;
-		s++;
-		while (n > 0) {
-			ptr = data + cursor;
-			bits = bytemap + cursor;
-			*ptr = *s;
-			*bits = 0;
-			s++;
-			n--;
-			cursor++;
-		}
+		if (len > 0) s += n;
 	}
 	return *this;
 }
